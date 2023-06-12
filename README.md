@@ -1,7 +1,7 @@
 ![Timbr logo description](Timbr_logo.png)
 
 # timbr REST API connector sample file
-This project is a sample connecting to timbr using REST API.
+This project is a sample connecting to timbr using REST API from Python.
 
 ## Dependencies
 - Python 3.7.13+ or 3.8.x or 3.9.x
