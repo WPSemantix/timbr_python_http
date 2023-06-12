@@ -11,7 +11,7 @@ Install as clone repository:
 - Install Python: https://www.python.org/downloads/release/python-3713/
 
 Install using pip and git:
-- `pip install git+https://github.com/WPSemantix/timbr_http`
+- `pip install git+https://github.com/WPSemantix/timbr_python_http`
 
 ## Sample usage
 - For an example of how to use the REST API connector for Timbr, follow this [Example file](example.py)
