@@ -1,4 +1,4 @@
-import timbr_rest_api as timbr
+import PyTimbrRestAPI as timbr
 
 # For http connections
 response = timbr.executeQuery(hostname='<TIMBR_IP/HOST>', port='<TIMBR_PORT>', ontology='<ONTOLOGY_NAME>', token='<USER_TOKEN>', query='<TIMBR_QUERY>', nested='<true/false>')

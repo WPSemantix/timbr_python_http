@@ -4,19 +4,19 @@ with open("README.md", "r", encoding="utf-8") as fh:
   long_description = fh.read()
 
 setuptools.setup(
-  name='timbr_rest_api',
+  name='PyTimbrRestAPI',
   version='1.0.0',
   author='timbr',
   author_email='contact@timbr.ai',
   description='Timbr REST API connector',
   long_description=long_description,
   long_description_content_type="text/markdown",
-  url='https://github.com/WPSemantix/timbr_http',
+  url='https://github.com/WPSemantix/timbr_python_http',
   project_urls={
-    "Bug Tracker": "https://github.com/WPSemantix/timbr_http/issues"
+    "Bug Tracker": "https://github.com/WPSemantix/timbr_python_http/issues"
   },
   license='MIT',
-  packages=['timbr_rest_api'],
+  packages=['PyTimbrRestAPI'],
   install_requires=[],
   package_data={},
   keywords = [
@@ -27,6 +27,8 @@ setuptools.setup(
     'timbr-api',
     'timbr-rest-api',
     'timbr-connector',
+    'PyTimbrRestAPI',
+    'PyTimbr',
   ],
   classifiers=[
     'Development Status :: 5 - Production/Stable',
