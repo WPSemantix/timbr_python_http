@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
   long_description = fh.read()
 
 setuptools.setup(
-  name='PyTimbrRestAPI',
+  name='pytimbrapi',
   version='1.0.0',
   author='timbr',
   author_email='contact@timbr.ai',
@@ -16,7 +16,7 @@ setuptools.setup(
     "Bug Tracker": "https://github.com/WPSemantix/timbr_python_http/issues"
   },
   license='MIT',
-  packages=['PyTimbrRestAPI'],
+  packages=['pytimbrapi'],
   install_requires=[],
   package_data={},
   keywords = [
@@ -29,6 +29,8 @@ setuptools.setup(
     'timbr-connector',
     'PyTimbrRestAPI',
     'PyTimbr',
+    'pytimbrapi',
+    'PyTimbrAPI',
   ],
   classifiers=[
     'Development Status :: 5 - Production/Stable',
