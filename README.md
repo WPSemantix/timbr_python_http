@@ -14,7 +14,7 @@ This project is a sample connecting to timbr using REST API from Python.
   - `pip install git+https://github.com/WPSemantix/timbr_python_http`
 
 - Install using pip:
-  - `pip install PyTimbrRestAPI`
+  - `pip install pytimbr_api`
 
 ## Sample usage
 - For an example of how to use the REST API connector for Timbr, follow this [Example file](example.py)
@@ -22,7 +22,7 @@ This project is a sample connecting to timbr using REST API from Python.
 ## Execute query with http connection
  ```python
   # For http connections
-  response = PyTimbrRestAPI.executeQuery(hostname='<TIMBR_IP/HOST>', port='<TIMBR_PORT>', ontology='<ONTOLOGY_NAME>', token='<USER_TOKEN>', query='<TIMBR_QUERY>', nested='<true/false>')
+  response = pytimbr_api.executeQuery(hostname='<TIMBR_IP/HOST>', port='<TIMBR_PORT>', ontology='<ONTOLOGY_NAME>', token='<USER_TOKEN>', query='<TIMBR_QUERY>', nested='<true/false>')
 
   # hostname - The IP / Hostname of the Timbr platform.
   # port - Timbr default port 443
@@ -37,7 +37,7 @@ This project is a sample connecting to timbr using REST API from Python.
 ## Execute query with https connection
  ```python
   # For http connections
-  response = PyTimbrRestAPI.securedExecuteQuery(hostname='<TIMBR_IP/HOST>', port='<TIMBR_PORT>', ontology='<ONTOLOGY_NAME>', token='<USER_TOKEN>', query='<TIMBR_QUERY>', nested='<true/false>')
+  response = pytimbr_api.securedExecuteQuery(hostname='<TIMBR_IP/HOST>', port='<TIMBR_PORT>', ontology='<ONTOLOGY_NAME>', token='<USER_TOKEN>', query='<TIMBR_QUERY>', nested='<true/false>')
 
   # hostname - The IP / Hostname of the Timbr platform.
   # port - Timbr default port 443
