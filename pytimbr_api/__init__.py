@@ -1,1 +1,1 @@
-from .timbr_http_connector import executeQuery, securedExecuteQuery
+from .timbr_http_connector import executeQuery
