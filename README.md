@@ -14,7 +14,7 @@ This project is a sample connecting to timbr using REST API from Python.
   - `pip install git+https://github.com/WPSemantix/timbr_python_http`
 
 - Install using pip:
-  - `pip install pytimbr_api`
+  - `pip install pytimbr-api`
 
 ## Sample usage
 - For an example of how to use the REST API connector for Timbr, follow this [Example file](example.py)
