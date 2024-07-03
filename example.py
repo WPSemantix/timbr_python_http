@@ -16,7 +16,7 @@ response = timbr.executeQuery(
   nested='<true/false>'
 )
 
-# hostname - String - The IP / Hostname of the Timbr server (not necessarily the hostname of the Timbr platform).
+# hostname - String - The IP / Hostname of the Timbr platform.
 # port - String - Timbr's default port with enabled_ssl is 443 without SSL is 11000.
 # ontology - String - The ontology / knowledge graph to connect to.
 # token - String - Timbr token value.
