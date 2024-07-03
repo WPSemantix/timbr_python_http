@@ -1,4 +1,4 @@
-![Timbr logo description](Timbr_logo.png)
+![Timbr logo description](https://timbr.ai/wp-content/uploads/2023/06/timbr-ai-l-5-226x60-1.png)
 
 # timbr REST API connector sample file
 This project is a sample connecting to timbr using REST API from Python.
@@ -19,34 +19,77 @@ This project is a sample connecting to timbr using REST API from Python.
 ## Sample usage
 - For an example of how to use the REST API connector for Timbr, follow this [Example file](example.py)
 
-## Execute query with http connection
+## Execute query with HTTP connection
  ```python
-  # For http connections
-  response = timbr.executeQuery(hostname='<TIMBR_IP/HOST>', port='<TIMBR_PORT>', ontology='<ONTOLOGY_NAME>', token='<USER_TOKEN>', query='<TIMBR_QUERY>', enabled_ssl=False, verify_ssl=<True/False>, nested='<true/false>')
+  # For HTTP connections
+  response = pytimbr_api.executeQuery(
+    hostname='<TIMBR_IP/HOST>',
+    port='<TIMBR_PORT>',
+    ontology='<ONTOLOGY_NAME>',
+    token='<USER_TOKEN>',
+    query='<TIMBR_QUERY>',
+    enabled_ssl=False,
+    verify_ssl=<True/False>,
+    nested='<true/false>'
+  )
 
-  # hostname - The IP / Hostname of the Timbr platform.
-  # port - Timbr default port 443
-  # ontology - the ontology / knowledge graph to connect to.
-  # token - Timbr token value.
-  # query - The query that you want to execute.
-  # nested - Change to true if nested flag needs to be enabled.
+  # hostname - String - The IP / Hostname of the Timbr server (not necessarily the hostname of the Timbr platform).
+  # port - String - Timbr's default port with enabled_ssl is 443 without SSL is 11000.
+  # ontology - String - The ontology / knowledge graph to connect to.
+  # token - String - Timbr token value.
+  # query - String - The query that you want to execute.
+  # enabled_ssl - Boolean - Use True for HTTPS connection and False for HTTP connection.
+  # verify_ssl - Boolean - Verifying the target server's SSL Certificate, use False to disable this process.
+  # nested - String - Change to 'true' if nested flag needs to be enabled. make sure this flag contains string value not bool value.
 
+  
+  # Real Example with dummy data for HTTP request
+  response = timbr.executeQuery(
+    hostname='mytimbrenv.com',
+    port='11000',
+    ontology='my_ontology',
+    token='tk_mytimbrtoken',
+    query='SELECT * FROM timbr.sys_concepts',
+    enabled_ssl=False,
+    verify_ssl=False,
+    nested='false'
+  )
   print(response)
 ```
 
-## Execute query with https connection
+## Execute query with HTTPS connection
  ```python
-  # For https connections
-  response = timbr.executeQuery(hostname='<TIMBR_IP/HOST>', port='<TIMBR_PORT>', ontology='<ONTOLOGY_NAME>', token='<USER_TOKEN>', query='<TIMBR_QUERY>', enabled_ssl=True, verify_ssl=<True/False>, nested='<true/false>')
-  
-  # hostname - string - The IP / Hostname of the Timbr platform.
-  # port - string - Timbr default port 443.
-  # ontology - string - The ontology / knowledge graph to connect to.
-  # token - string - Timbr token value.
-  # query - string - The query that you want to execute.
-  # enabled_ssl - boolean - Use True for https connection and False for http connection.
-  # verify_ssl - boolean - Verifying the target server’s SSL Certificate, use False to diable this proccess.
-  # nested - string - Change to 'true' if nested flag needs to be enabled. make sure this flag contains string value not bool value.
+  # For HTTPS connections
+  response = pytimbr_api.executeQuery(
+    hostname='<TIMBR_IP/HOST>',
+    port='<TIMBR_PORT>',
+    ontology='<ONTOLOGY_NAME>',
+    token='<USER_TOKEN>',
+    query='<TIMBR_QUERY>',
+    enabled_ssl=True,
+    verify_ssl=<True/False>,
+    nested='<true/false>'
+  )
 
+  # hostname - String - The IP / Hostname of the Timbr server (not necessarily the hostname of the Timbr platform).
+  # port - String - Timbr's default port with enabled_ssl is 443 without SSL is 11000.
+  # ontology - String - The ontology / knowledge graph to connect to.
+  # token - String - Timbr token value.
+  # query - String - The query that you want to execute.
+  # enabled_ssl - Boolean - Use True for HTTPS connection and False for HTTP connection.
+  # verify_ssl - Boolean - Verifying the target server's SSL Certificate, use False to disable this process.
+  # nested - String - Change to 'true' if nested flag needs to be enabled. make sure this flag contains string value not bool value.
+  
+  # Real Example with dummy data for HTTPS request
+  response = timbr.executeQuery(
+    hostname='mytimbrenv.com',
+    port='443',
+    ontology='my_ontology',
+    token='tk_mytimbrtoken',
+    query='SELECT * FROM timbr.sys_concepts',
+    enabled_ssl=True,
+    verify_ssl=True,
+    nested='false'
+  )
   print(response)
 ```
