@@ -1,1 +1,1 @@
-from .timbr_http_connector import executeQuery
+from .timbr_http_connector import advancedQueryExecute, simpleQueryExecution
