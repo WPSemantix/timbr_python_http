@@ -32,3 +32,16 @@ def simpleQueryExecution(url, ontology, token, query, datasource = None, nested 
   if not base_url.endswith('/'):
     base_url = f'{url}/'
   return executeTimbrQuery(base_url, ontology, token, query, datasource, nested, True, False)
+
+# Backward compatibility 
+def executeQuery(hostname, port, ontology, token, query, enabled_ssl=True, verify_ssl=True, nested = 'false'):
+  return advancedQueryExecute(
+    hostname = hostname,
+    port = port,
+    ontology = ontology,
+    token = token,
+    query = query,
+    enabled_ssl = enabled_ssl,
+    verify_ssl = verify_ssl,
+    nested = nested
+  )
