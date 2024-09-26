@@ -35,13 +35,14 @@ def simpleQueryExecution(url, ontology, token, query, datasource = None, nested 
 
 # Backward compatibility 
 def executeQuery(hostname, port, ontology, token, query, enabled_ssl=True, verify_ssl=True, nested = 'false'):
-  return advancedQueryExecute(
-    hostname = hostname,
-    port = port,
-    ontology = ontology,
-    token = token,
-    query = query,
-    enabled_ssl = enabled_ssl,
-    verify_ssl = verify_ssl,
-    nested = nested
-  )
+  baseUrl = "http"
+  if enabled_ssl == True:
+    baseUrl = baseUrl + "s"
+  baseUrl = f"{baseUrl}://{hostname}:{port}/"
+  return legacyExecuteTimbrQuery(baseUrl, ontology, token, query, nested, verify_ssl)
+
+def legacyExecuteTimbrQuery(url, ontology, token, query, nested, verify):
+  post_data = {'ontology_name': ontology, 'query': query}
+  headers = {'Content-Type': 'application/json', 'x-api-key': token, 'nested': nested}
+  response = requests.post(url + "timbr/api/query/", headers = headers, json = post_data, verify = verify)
+  return response.json()

@@ -5,14 +5,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
   name='pytimbr_api',
-  version='1.0.3',
+  version='1.0.4',
   author='timbr',
   author_email='contact@timbr.ai',
   description='Timbr REST API connector',
   long_description=long_description,
   long_description_content_type="text/markdown",
   url='https://github.com/WPSemantix/timbr_python_http',
-  download_url = 'https://github.com/WPSemantix/timbr_python_http/archive/refs/tags/v1.0.3.tar.gz',
+  download_url = 'https://github.com/WPSemantix/timbr_python_http/archive/refs/tags/v1.0.4.tar.gz',
   project_urls={
     "Bug Tracker": "https://github.com/WPSemantix/timbr_python_http/issues"
   },
