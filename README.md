@@ -70,7 +70,7 @@ This project is a pure python connector to timbr (no dependencies required).
 ### HTTPS example
 ```python
   pytimbr_api.run_query(
-    hostname = "https://mytimbrenv.com:443",
+    url = "https://mytimbrenv.com:443",
     ontology = "my_ontology",
     token = "tk_mytimbrtoken",
     query = "SELECT * FROM timbr.sys_concepts",
@@ -85,7 +85,7 @@ This project is a pure python connector to timbr (no dependencies required).
 ### HTTP connection
 ```python
   response = pytimbr_api.run_query(
-    hostname = "http://mytimbrenv.com:11000",
+    url = "http://mytimbrenv.com:11000",
     ontology = "my_ontology",
     token = "tk_mytimbrtoken",
     query = "SELECT * FROM timbr.sys_concepts",
@@ -100,7 +100,7 @@ This project is a pure python connector to timbr (no dependencies required).
 ### HTTPS connection
 ```python
   response = pytimbr_api.run_query(
-    hostname = "https://mytimbrenv.com:443",
+    url = "https://mytimbrenv.com:443",
     ontology = "my_ontology",
     token = "tk_mytimbrtoken",
     query = "SELECT * FROM timbr.sys_concepts",

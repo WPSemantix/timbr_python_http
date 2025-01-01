@@ -41,7 +41,7 @@ print(response)
 
 # HTTPS example
 response = timbr.simpleQueryExecution(
-  hostname = "https://mytimbrenv.com:443",
+  url = "https://mytimbrenv.com:443",
   ontology = "my_ontology",
   token = "tk_mytimbrtoken",
   query = "SELECT * FROM timbr.sys_concepts",
