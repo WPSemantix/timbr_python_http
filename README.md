@@ -72,7 +72,7 @@ This project is a pure python connector to timbr (no dependencies required).
     port = 443
     nested = "false",
     verify_ssl = True,
-    enableIPv6 = False,
+    enable_IPv6 = False,
   )
 ```
 
@@ -104,7 +104,7 @@ This project is a pure python connector to timbr (no dependencies required).
     port = 443
     nested = "false",
     verify_ssl = True,
-    enableIPv6 = False,
+    enable_IPv6 = False,
   )
   print(response)
 ```
