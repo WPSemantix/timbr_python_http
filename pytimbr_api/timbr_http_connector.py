@@ -11,30 +11,16 @@
 
 import requests
 
-def build_url(hostname, port, verify_ssl):
-  base_url = 'http'
-  base_port = port
-
-  if port == None:
-    if verify_ssl:
-      base_port = 443
-    else:
-      base_port = 80
-
-  if verify_ssl:
-    base_url = base_url + 's'
-  base_url = f'{base_url}://{hostname}:{base_port}/'
-
-  return base_url
-
-def run_query(hostname, ontology, token, query, datasource = None, port = None, nested = 'false', verify_ssl = True, enable_IPv6 = False):
+def run_query(url, ontology, token, query, datasource = None, nested = 'false', verify_ssl = True, enable_IPv6 = False):
   datasource_addition = ''
   if datasource:
     datasource_addition = f'?datasource={datasource}'
-  url = build_url(hostname, port, verify_ssl)
+  base_url = url
+  if not base_url.endswith('/'):
+    base_url = base_url + '/'
   headers = {'Content-Type': 'application/text', 'x-api-key': token, 'nested': nested, 'Connection': 'close'}
   requests.packages.urllib3.util.connection.HAS_IPV6 = enable_IPv6
-  response = requests.post(f'{url}timbr/openapi/ontology/{ontology}/query{datasource_addition}', headers = headers, data = query, verify = verify_ssl)
+  response = requests.post(f'{base_url}timbr/openapi/ontology/{ontology}/query{datasource_addition}', headers = headers, data = query, verify = verify_ssl)
   return response.json()
 
 # Deprecated - Backward compatibility
