@@ -11,17 +11,48 @@
 
 import requests
 
-def run_query(url, ontology, token, query, datasource = None, nested = 'false', verify_ssl = True, enable_IPv6 = False):
-  datasource_addition = ''
-  if datasource:
-    datasource_addition = f'?datasource={datasource}'
-  base_url = url
-  if not base_url.endswith('/'):
-    base_url = base_url + '/'
-  headers = {'Content-Type': 'application/text', 'x-api-key': token, 'nested': nested, 'Connection': 'close'}
-  requests.packages.urllib3.util.connection.HAS_IPV6 = enable_IPv6
-  response = requests.post(f'{base_url}timbr/openapi/ontology/{ontology}/query{datasource_addition}', headers = headers, data = query, verify = verify_ssl)
-  return response.json()
+def run_query(
+    url: str,
+    ontology: str,
+    token: str,
+    query: str,
+    datasource: str = None,
+    nested: str = 'false',
+    verify_ssl: bool = True,
+    enable_IPv6: bool = False,
+):
+    datasource_addition = ''
+    if datasource:
+      datasource_addition = f'?datasource={datasource}'
+    
+    base_url = url
+    if not base_url.endswith('/'):
+      base_url = base_url + '/'
+    
+    headers = {
+      'Content-Type': 'application/text',
+      'x-api-key': token,
+      'nested': nested,
+      'Connection': 'close',
+    }
+    
+    requests.packages.urllib3.util.connection.HAS_IPV6 = enable_IPv6
+    response = requests.post(
+      f'{base_url}timbr/openapi/ontology/{ontology}/query{datasource_addition}',
+      headers = headers,
+      data = query,
+      verify = verify_ssl,
+    )
+    if response.status_code != 200:
+      raise Exception(f'Error: {response.text}')
+    
+    response_json = None
+    try:
+      response_json = response.json()
+    except Exception as e:
+      raise Exception(f'Could not parse response from timbr server: {e}')
+
+    return response_json
 
 # Deprecated - Backward compatibility
 def executeTimbrQuery(url, ontology, token, query, override_datasource, nested, verify, enableIPv6):
