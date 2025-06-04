@@ -1,11 +1,12 @@
-![Timbr logo description](https://timbr.ai/wp-content/uploads/2023/06/timbr-ai-l-5-226x60-1.png)
+![Timbr logo](https://timbr.ai/wp-content/uploads/2025/01/logotimbrai230125.png)
 
 [![FOSSA Status](https://app.fossa.com/api/projects/custom%2B50508%2Fgithub.com%2FWPSemantix%2Ftimbr_python_http.svg?type=shield&issueType=license)](https://app.fossa.com/projects/custom%2B50508%2Fgithub.com%2FWPSemantix%2Ftimbr_python_http?ref=badge_shield&issueType=license)
 [![FOSSA Status](https://app.fossa.com/api/projects/custom%2B50508%2Fgithub.com%2FWPSemantix%2Ftimbr_python_http.svg?type=shield&issueType=security)](https://app.fossa.com/projects/custom%2B50508%2Fgithub.com%2FWPSemantix%2Ftimbr_python_http?ref=badge_shield&issueType=security)
 
-[![Python 3.7.13](https://img.shields.io/badge/python-3.7.13+-blue.svg)](https://www.python.org/downloads/release/python-3713/)
-[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-3820/)
-[![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-3921/)
+[![Python 3.9](https://img.shields.io/badge/python-3.9-blue)](https://www.python.org/downloads/release/python-3921/)
+[![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-31017/)
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-31112/)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3129/)
 
 [![PypiVersion](https://img.shields.io/pypi/v/pytimbr-api.svg)](https://badge.fury.io/py/pytimbr-api)
 
@@ -13,7 +14,8 @@
 This project is a pure python connector to timbr (no dependencies required).
 
 ## Dependencies
-- Python 3.7.13+ or 3.8.x or 3.9.x
+- Access to a timbr-server
+- Python from 3.9.13 or newer
 
 ## Installation
 - Install as clone repository:

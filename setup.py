@@ -18,7 +18,9 @@ setuptools.setup(
   },
   license='MIT',
   packages=['pytimbr_api'],
-  install_requires=[],
+  install_requires=[
+    'requests>=2.32.3',
+  ],
   package_data={},
   keywords = [
     'timbr',
