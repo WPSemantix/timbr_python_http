@@ -33,6 +33,8 @@ def run_query(
     nested: str = 'false',
     verify_ssl: bool = True,
     enable_IPv6: bool = False,
+    is_jwt: bool = False,
+    jwt_tenant_id: str = None,
 ):
     datasource_addition = ''
     if datasource:
@@ -44,11 +46,17 @@ def run_query(
     
     headers = {
       'Content-Type': 'application/text',
-      'x-api-key': token,
       'nested': nested,
       'Connection': 'close',
     }
-    
+
+    if is_jwt:
+      headers['x-jwt-token'] = token
+      if jwt_tenant_id:
+        headers['x-jwt-tenant-id'] = jwt_tenant_id
+    else:
+      headers['x-api-key'] = token
+
     requests.packages.urllib3.util.connection.HAS_IPV6 = enable_IPv6
     response = requests.post(
       f'{base_url}timbr/openapi/ontology/{ontology}/query{datasource_addition}',
