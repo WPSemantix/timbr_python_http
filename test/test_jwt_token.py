@@ -24,6 +24,7 @@ def test_query_using_jwt(test_config):
     response = requests.post(token_url, data=payload, headers=headers)
     tokens = response.json()
 
+    access_token = None
     if response.status_code == 200:
         access_token = tokens.get('access_token')
         print(f"Access Token: {access_token}")
