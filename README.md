@@ -19,7 +19,7 @@ This project is a pure python connector to timbr (no dependencies required).
 
 ## Installation
 - Install as clone repository:
-  - Install Python: https://www.python.org/downloads/release/python-3713/
+  - Install Python: https://www.python.org/downloads/release/python-3913/
 
 - Install using pip and git:
   - `pip install git+https://github.com/WPSemantix/timbr_python_http`
@@ -45,17 +45,21 @@ This project is a pure python connector to timbr (no dependencies required).
     enable_IPv6 = <True/False>,
   )
 
-  # url    - Required - String - The IP / Hostname of the Timbr platform.
-  # ontology    - Required - String - The ontology / knowledge graph to connect to.
-  # token       - Required - String - Timbr token value.
-  # query       - Required - String - The query that you want to execute.
-  # datasource  - Optional - String - Add the specific datasource name that you want to query from, the default value is the current active datasource of your ontology.
-  # nested      - Optional - String - Change to 'true' if nested flag needs to be enabled. make sure this flag contains string value not bool value.
-  # verify_ssl  - Optional - Boolean - Verifying the target server's SSL Certificate, use False to disable this process.
-  # enable_IPv6 - Optional - Boolean - Change to 'true' if you are using IPv6 connection.
+  # url           - Required - String - The IP / Hostname of the Timbr platform.
+  # ontology      - Required - String - The ontology / knowledge graph to connect to.
+  # token         - Required - String - Timbr token value or JWT token value. Note: If you are using JWT token, you need to set the is_jwt parameter to True.
+  # query         - Required - String - The query that you want to execute.
+  # datasource    - Optional - String - Add the specific datasource name that you want to query from, the default value is the current active datasource of your ontology.
+  # nested        - Optional - String - Change to 'true' if nested flag needs to be enabled. make sure this flag contains string value not bool value.
+  # verify_ssl    - Optional - Boolean - Verifying the target server's SSL Certificate, use False to disable this process.
+  # enable_IPv6   - Optional - Boolean - Change to 'true' if you are using IPv6 connection.
+  # is_jwt        - Optional - Boolean - Set to True if you are using JWT token, otherwise set to False.
+  # jwt_tenant_id - Optional - String - The tenant ID for JWT authentication
 ```
 
-### HTTP example
+### Using Timbr token
+
+#### HTTP example
 ```python
   pytimbr_api.run_query(
     url = "http://mytimbrenv.com:11000",
@@ -69,7 +73,7 @@ This project is a pure python connector to timbr (no dependencies required).
   )
 ```
 
-### HTTPS example
+#### HTTPS example
 ```python
   pytimbr_api.run_query(
     url = "https://mytimbrenv.com:443",
@@ -83,8 +87,45 @@ This project is a pure python connector to timbr (no dependencies required).
   )
 ```
 
+### Using JWT token
+
+#### HTTP example
+```python
+  pytimbr_api.run_query(
+    url = "http://mytimbrenv.com:11000",
+    ontology = "my_ontology",
+    token = "tk_mytimbrtoken",
+    query = "SELECT * FROM timbr.sys_concepts",
+    datasource = "my_datasource",
+    nested = "false",
+    verify_ssl = False,
+    enable_IPv6 = False,
+    is_jwt = True,
+    jwt_tenant_id = "my_tenant_id",
+  )
+```
+
+#### HTTPS example
+```python
+  pytimbr_api.run_query(
+    url = "https://mytimbrenv.com:11000",
+    ontology = "my_ontology",
+    token = "tk_mytimbrtoken",
+    query = "SELECT * FROM timbr.sys_concepts",
+    datasource = "my_datasource",
+    nested = "false",
+    verify_ssl = True,
+    enable_IPv6 = False,
+    is_jwt = True,
+    jwt_tenant_id = "my_tenant_id",
+  )
+```
+
 ## Execute query examples
-### HTTP connection
+
+### Using Timbr token
+
+#### HTTP connection
 ```python
   response = pytimbr_api.run_query(
     url = "http://mytimbrenv.com:11000",
@@ -99,7 +140,7 @@ This project is a pure python connector to timbr (no dependencies required).
   print(response)
 ```
 
-### HTTPS connection
+#### HTTPS connection
 ```python
   response = pytimbr_api.run_query(
     url = "https://mytimbrenv.com:443",
@@ -110,6 +151,42 @@ This project is a pure python connector to timbr (no dependencies required).
     nested = "false",
     verify_ssl = True,
     enable_IPv6 = False,
+  )
+  print(response)
+```
+
+### Using JWT token
+
+#### HTTP example
+```python
+  response = pytimbr_api.run_query(
+    url = "http://mytimbrenv.com:11000",
+    ontology = "my_ontology",
+    token = "tk_mytimbrtoken",
+    query = "SELECT * FROM timbr.sys_concepts",
+    datasource = "my_datasource",
+    nested = "false",
+    verify_ssl = False,
+    enable_IPv6 = False,
+    is_jwt = True,
+    jwt_tenant_id = "my_tenant_id",
+  )
+  print(response)
+```
+
+#### HTTPS example
+```python
+  response = pytimbr_api.run_query(
+    url = "https://mytimbrenv.com:11000",
+    ontology = "my_ontology",
+    token = "tk_mytimbrtoken",
+    query = "SELECT * FROM timbr.sys_concepts",
+    datasource = "my_datasource",
+    nested = "false",
+    verify_ssl = True,
+    enable_IPv6 = False,
+    is_jwt = True,
+    jwt_tenant_id = "my_tenant_id",
   )
   print(response)
 ```
