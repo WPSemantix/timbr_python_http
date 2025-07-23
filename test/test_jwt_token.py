@@ -30,7 +30,8 @@ def test_query_using_jwt(test_config):
         print(f"Access Token: {access_token}")
     else:
         print(f"Error fetching access token: {tokens}")
-
+        assert False, f"Error fetching access token: {tokens}"
+    
     results = run_query(
         url=test_config['url'],
         ontology=test_config['ontology'],
