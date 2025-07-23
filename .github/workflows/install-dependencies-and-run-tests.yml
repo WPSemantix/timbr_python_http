@@ -35,12 +35,18 @@ jobs:
           ONTOLOGY: ${{ secrets.ONTOLOGY }}
           TOKEN: ${{ secrets.TOKEN }}
           QUERY: ${{ secrets.QUERY }}
-          DATASTORE: ${{ secrets.DATASTORE }}
+          DATASOURCE: ${{ secrets.DATASOURCE }}
           HOSTNAME: ${{ secrets.HOSTNAME }}
           PORT: ${{ secrets.PORT }}
           ENABLED_SSL: ${{ secrets.ENABLED_SSL }}
           VERIFY_SSL: ${{ secrets.VERIFY_SSL }}
           NESTED: ${{ secrets.NESTED }}
           ENABLE_IPV6: ${{ secrets.ENABLE_IPV6 }}
+          JWT_TENANT_ID: ${{ secrets.JWT_TENANT_ID }}
+          JWT_CLIENT_ID: ${{ secrets.JWT_CLIENT_ID }}
+          JWT_USERNAME: ${{ secrets.JWT_USERNAME }}
+          JWT_PASSWORD: ${{ secrets.JWT_PASSWORD }}
+          JWT_SCOPE: ${{ secrets.JWT_SCOPE }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
       run: |
         pytest
