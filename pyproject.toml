@@ -1,3 +1,56 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "pytimbr_api"
+version = "1.0.9"
+description = "Timbr REST API connector"
+readme = "README.md"
+license = "MIT"
+authors = [
+  {name = "timbr", email = "contact@timbr.ai"}
+]
+maintainers = [
+  {name = "timbr", email = "contact@timbr.ai"}
+]
+keywords = [
+  "timbr",
+  "timbr-http",
+  "timbr-https",
+  "timbr-rest",
+  "timbr-api",
+  "timbr-rest-api",
+  "timbr-connector",
+  "PyTimbrRestAPI",
+  "PyTimbr",
+  "pytimbrapi",
+  "PyTimbrAPI",
+  "pytimbr_api",
+  "PyTimbr_API"
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Build Tools",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12"
+]
+requires-python = ">=3.9"
+dependencies = [
+  "requests>=2.32.3"
+]
+
+[project.urls]
+Homepage = "https://github.com/WPSemantix/timbr_python_http"
+Download = "https://github.com/WPSemantix/timbr_python_http/archive/refs/tags/v1.0.9.tar.gz"
+"Bug Tracker" = "https://github.com/WPSemantix/timbr_python_http/issues"
+Repository = "https://github.com/WPSemantix/timbr_python_http"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pytimbr_api*"]
+exclude = ["test*"]
