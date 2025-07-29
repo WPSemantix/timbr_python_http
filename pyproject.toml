@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pytimbr_api"
-version = "1.0.9"
+version = "1.0.10"
 description = "Timbr REST API connector"
 readme = "README.md"
 license = "MIT"
@@ -46,7 +46,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/WPSemantix/timbr_python_http"
-Download = "https://github.com/WPSemantix/timbr_python_http/archive/refs/tags/v1.0.9.tar.gz"
+Download = "https://github.com/WPSemantix/timbr_python_http/archive/refs/tags/v1.0.10.tar.gz"
 "Bug Tracker" = "https://github.com/WPSemantix/timbr_python_http/issues"
 Repository = "https://github.com/WPSemantix/timbr_python_http"
 
