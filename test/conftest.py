@@ -31,6 +31,8 @@ def test_config():
     "verify_ssl": convert_env_to_bool(os.getenv("VERIFY_SSL")),
     "nested": os.getenv("NESTED"),
     "enableIPv6": convert_env_to_bool(os.getenv("ENABLE_IPV6")),
+    "jwt_timbr_url": os.getenv("JWT_TIMBR_URL"),
+    "jwt_timbr_ontology": os.getenv("JWT_TIMBR_ONTOLOGY"),
     "jwt_tenant_id": os.getenv("JWT_TENANT_ID"),
     "jwt_client_id": os.getenv("JWT_CLIENT_ID"),
     "jwt_username": os.getenv("JWT_USERNAME"),

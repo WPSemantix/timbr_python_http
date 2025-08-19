@@ -33,8 +33,8 @@ def test_query_using_jwt(test_config):
         assert False, f"Error fetching access token: {tokens}"
     
     results = run_query(
-        url=test_config['url'],
-        ontology=test_config['ontology'],
+        url=test_config['jwt_timbr_url'],
+        ontology=test_config['jwt_timbr_ontology'],
         token=access_token,
         query='SELECT 1',
         datasource=test_config['datasource'],
