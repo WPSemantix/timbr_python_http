@@ -14,18 +14,22 @@ response = timbr.run_query(
   nested = "<true/false>",
   verify_ssl = <True/False>,
   enable_IPv6 = <True/False>,
+  is_jwt = <True/False>,
+  jwt_tenant_id = "<JWT_TENANT_ID>",
+  additional_headers = <{ "x-api-impersonate-user": "<user to impersonate>" }>,
 )
 
-  # url           - Required - String - The IP / Hostname of the Timbr platform.
-  # ontology      - Required - String - The ontology / knowledge graph to connect to.
-  # token         - Required - String - Timbr token value or JWT token value. Note: If you are using JWT token, you need to set the is_jwt parameter to True.
-  # query         - Required - String - The query that you want to execute.
-  # datasource    - Optional - String - Add the specific datasource name that you want to query from, the default value is the current active datasource of your ontology.
-  # nested        - Optional - String - Change to 'true' if nested flag needs to be enabled. make sure this flag contains string value not bool value.
-  # verify_ssl    - Optional - Boolean - Verifying the target server's SSL Certificate, use False to disable this process.
-  # enable_IPv6   - Optional - Boolean - Change to 'true' if you are using IPv6 connection.
-  # is_jwt        - Optional - Boolean - Set to True if you are using JWT token, otherwise set to False.
-  # jwt_tenant_id - Optional - String - The tenant ID for JWT authentication
+  # url                 - Required - String - The IP / Hostname of the Timbr platform.
+  # ontology            - Required - String - The ontology / knowledge graph to connect to.
+  # token               - Required - String - Timbr token value or JWT token value. Note: If you are using JWT token, you need to set the is_jwt parameter to True.
+  # query               - Required - String - The query that you want to execute.
+  # datasource          - Optional - String - Add the specific datasource name that you want to query from, the default value is the current active datasource of your ontology.
+  # nested              - Optional - String - Change to 'true' if nested flag needs to be enabled. make sure this flag contains string value not bool value.
+  # verify_ssl          - Optional - Boolean - Verifying the target server's SSL Certificate, use False to disable this process.
+  # enable_IPv6         - Optional - Boolean - Change to 'true' if you are using IPv6 connection.
+  # is_jwt              - Optional - Boolean - Set to True if you are using JWT token, otherwise set to False.
+  # jwt_tenant_id       - Optional - String - The tenant ID for JWT authentication
+  # additional_headers  - Optional - Dict - Extra Timbr connection parameters sent with every request (e.g., 'x-api-impersonate-user').
 
 # HTTP example
 response = timbr.run_query(
