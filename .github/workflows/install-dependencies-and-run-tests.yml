@@ -42,6 +42,8 @@ jobs:
           VERIFY_SSL: ${{ secrets.VERIFY_SSL }}
           NESTED: ${{ secrets.NESTED }}
           ENABLE_IPV6: ${{ secrets.ENABLE_IPV6 }}
+          JWT_TIMBR_URL: ${{ secrets.JWT_TIMBR_URL }}
+          JWT_TIMBR_ONTOLOGY: ${{ secrets.JWT_TIMBR_ONTOLOGY }}
           JWT_TENANT_ID: ${{ secrets.JWT_TENANT_ID }}
           JWT_CLIENT_ID: ${{ secrets.JWT_CLIENT_ID }}
           JWT_USERNAME: ${{ secrets.JWT_USERNAME }}

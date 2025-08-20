@@ -35,6 +35,7 @@ def run_query(
     enable_IPv6: bool = False,
     is_jwt: bool = False,
     jwt_tenant_id: str = None,
+    additional_headers: dict = None,
 ):
     datasource_addition = ''
     if datasource:
@@ -56,6 +57,10 @@ def run_query(
         headers['x-jwt-tenant-id'] = jwt_tenant_id
     else:
       headers['x-api-key'] = token
+
+    if additional_headers:
+       for key, value in additional_headers.items():
+           headers[key.replace('_', '-')] = value
 
     requests.packages.urllib3.util.connection.HAS_IPV6 = enable_IPv6
     response = requests.post(
