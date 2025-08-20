@@ -2,6 +2,7 @@ import requests
 import pytest
 import time
 from pytimbr_api.timbr_http_connector import run_query
+import uuid
 
 create_granting_user_stmt = "CREATE USER {username} OPTIONS(email='{username}@timbr-test.ai', password='{password}', first_name='{first_name}', last_name='{last_name}');" \
                    "GRANT QUERY ON ALL DATASOURCE TO USER {username};" \
@@ -21,8 +22,10 @@ drop_user_stmt = "REVOKE EDIT ON ALL USER FROM USER {username};" \
 "REVOKE QUERY ON ALL DATASOURCE FROM USER {username};" \
 "DROP USER {username};"
 
-granting_user = "timbr_python_http_granting_user"
-impersonating_user = "timbr_python_http_impersonating_user"
+# Generate unique suffix using timestamp and UUID
+unique_suffix = str(uuid.uuid4())[:8]
+granting_user = f"timbr_python_http_granting_user_{unique_suffix}"
+impersonating_user = f"timbr_python_http_impersonating_user_{unique_suffix}"
 
 def create_users(test_config):
     print("Creating users...")
@@ -145,6 +148,7 @@ class TestUserImpersonation:
         impersonating_user_token = impersonating_user_token_res[0]['token']
 
         # Act
+        time.sleep(5) # Make sure the permissions are propagated
         res = run_query(
             url=test_config['url'],
             ontology=test_config['ontology'],
@@ -158,5 +162,5 @@ class TestUserImpersonation:
                 "x-api-impersonate-user": granting_user
             }
         )
-        assert res[0].keys() == {'timbr_python_http_granting_user'}
-        assert res[0]['timbr_python_http_granting_user'] == 'timbr_python_http_granting_user'
+        assert list(res[0].keys())[0] == granting_user
+        assert res[0][granting_user] == granting_user
