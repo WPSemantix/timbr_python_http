@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pytimbr_api"
-version = "1.0.10"
+version = "2.0.0"
 description = "Timbr REST API connector"
 readme = "README.md"
 license = "MIT"
