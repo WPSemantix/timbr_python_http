@@ -16,6 +16,11 @@ def test_run_query_with_unicode_characters(test_config):
     
     assert results is not None, "Results should not be None for unicode query"
     assert len(results) > 0, "Results should contain data"
+    # Verify unicode characters are correctly processed in results
+    first_row = results[0]
+    assert first_row['chinese'] == '测试', "Chinese characters should be preserved"
+    assert first_row['french'] == 'café', "French accented characters should be preserved"
+    assert first_row['emoji'] == '😀', "Emoji should be preserved"
 
 
 def test_run_query_with_already_encoded_bytes(test_config):
@@ -46,6 +51,10 @@ def test_run_query_with_special_sql_characters(test_config):
     
     assert results is not None, "Results should not be None for query with special characters"
     assert len(results) > 0, "Results should contain data"
+    # Verify special characters are correctly processed in results
+    first_row = results[0]
+    assert first_row['name'] == "O'Brien", "Apostrophe in name should be preserved"
+    assert first_row['copyright'] == '©', "Copyright symbol should be preserved"
 
 
 def test_run_query_with_multilingual_text(test_config):
@@ -61,3 +70,9 @@ def test_run_query_with_multilingual_text(test_config):
     
     assert results is not None, "Results should not be None for multilingual query"
     assert len(results) > 0, "Results should contain data"
+    # Verify multilingual characters are correctly processed in results
+    first_row = results[0]
+    assert first_row['english'] == 'Hello', "English text should be preserved"
+    assert first_row['russian'] == 'Привет', "Russian Cyrillic text should be preserved"
+    assert first_row['arabic'] == 'مرحبا', "Arabic text should be preserved"
+    assert first_row['japanese'] == 'こんにちは', "Japanese text should be preserved"

@@ -28,7 +28,7 @@ def run_query(
     url: str,
     ontology: str,
     token: str,
-    query: str,
+    query: str | bytes,
     datasource: str = None,
     nested: str = 'false',
     verify_ssl: bool = True,
