@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pytimbr_api"
-version = "2.0.0"
+version = "2.1.0"
 description = "Timbr REST API connector"
 readme = "README.md"
 license = "MIT"
@@ -34,12 +34,11 @@ classifiers = [
   "Intended Audience :: Developers",
   "Topic :: Software Development :: Build Tools",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12"
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
   "requests>=2.32.4"
 ]

@@ -4,12 +4,12 @@ import time
 from pytimbr_api.timbr_http_connector import run_query
 import uuid
 
-create_granting_user_stmt = "CREATE USER {username} OPTIONS(email='{username}@timbr-test.ai', password='{password}', first_name='{first_name}', last_name='{last_name}');" \
+create_granting_user_stmt = "CREATE USER {username} PASSWORD '{password}' OPTIONS(email='{username}@timbr-test.ai', first_name='{first_name}', last_name='{last_name}');" \
                    "GRANT QUERY ON ALL DATASOURCE TO USER {username};" \
                    "GRANT ACCESS ON ALL ONTOLOGY TO USER {username};" \
                    "GRANT EDIT ON ALL USER TO USER {username};"
 
-create_impersonating_user_stmt = "CREATE USER {username} OPTIONS(email='{username}@timbr-test.ai', password='{password}', first_name='{first_name}', last_name='{last_name}');" \
+create_impersonating_user_stmt = "CREATE USER {username} PASSWORD '{password}' OPTIONS(email='{username}@timbr-test.ai', first_name='{first_name}', last_name='{last_name}');" \
                    "GRANT ACCESS ON ALL ONTOLOGY TO USER {username};" \
                    "GRANT QUERY ON ALL USER TO USER {username};"
 
@@ -24,13 +24,15 @@ drop_user_stmt = "REVOKE EDIT ON ALL USER FROM USER {username};" \
 
 # Generate unique suffix using timestamp and UUID
 unique_suffix = str(uuid.uuid4())[:8]
-granting_user = f"timbr_python_http_granting_user_{unique_suffix}"
-impersonating_user = f"timbr_python_http_impersonating_user_{unique_suffix}"
+# granting_user = f"timbr_granting_{unique_suffix}"
+# impersonating_user = f"timbr_impersonating_{unique_suffix}"
+granting_user = f"timbr_granting"
+impersonating_user = f"timbr_impersonating"
 
 def create_users(test_config):
     print("Creating users...")
-    granting_user_stmt = create_granting_user_stmt.format(username=granting_user, password="SecurePassword123", first_name="Granting", last_name="User")
-    impersonating_user_stmt = create_impersonating_user_stmt.format(username=impersonating_user, password="SecurePassword123", first_name="Impersonating", last_name="User")
+    granting_user_stmt = create_granting_user_stmt.format(username=granting_user, password=test_config['timbr_user_password'], first_name="Granting", last_name="User")
+    impersonating_user_stmt = create_impersonating_user_stmt.format(username=impersonating_user, password=test_config['timbr_user_password'], first_name="Impersonating", last_name="User")
 
     run_query(
         url=test_config['url'],
@@ -120,15 +122,15 @@ def drop_users(test_config):
 def setup_test_users(test_config):
     """Fixture to create users at the start and drop them at the end"""
     # Setup: Create users
-    create_users(test_config)
+    # create_users(test_config)
     
     yield test_config  # This provides the test_config to the test
     
     # Teardown: Drop users (runs even if tests fail)
-    try:
-        drop_users(test_config)
-    except Exception as e:
-        print(f"Warning: Failed to drop users during teardown: {e}")
+    # try:
+        # drop_users(test_config)
+    # except Exception as e:
+        # print(f"Warning: Failed to drop users during teardown: {e}")
 
 class TestUserImpersonation:
     def test_user_impersonation(self, setup_test_users):

@@ -28,7 +28,7 @@ def run_query(
     url: str,
     ontology: str,
     token: str,
-    query: str,
+    query: str | bytes,
     datasource: str = None,
     nested: str = 'false',
     verify_ssl: bool = True,
@@ -66,7 +66,7 @@ def run_query(
     response = requests.post(
       f'{base_url}timbr/openapi/ontology/{ontology}/query{datasource_addition}',
       headers = headers,
-      data = query,
+      data = query.encode('utf-8') if isinstance(query, str) else query,
       verify = verify_ssl,
     )
     return _parse_response(response)

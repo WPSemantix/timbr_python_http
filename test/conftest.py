@@ -39,4 +39,5 @@ def test_config():
     "jwt_password": os.getenv("JWT_PASSWORD"),
     "jwt_scope": os.getenv("JWT_SCOPE"),
     "jwt_secret": os.getenv("JWT_SECRET"),
+    "timbr_user_password": os.getenv("TIMBR_USER_PASSWORD"),
   }
