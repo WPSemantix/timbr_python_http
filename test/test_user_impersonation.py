@@ -26,13 +26,13 @@ drop_user_stmt = "REVOKE EDIT ON ALL USER FROM USER {username};" \
 unique_suffix = str(uuid.uuid4())[:8]
 # granting_user = f"timbr_granting_{unique_suffix}"
 # impersonating_user = f"timbr_impersonating_{unique_suffix}"
-granting_user = f"timbr_granting2"
-impersonating_user = f"timbr_impersonating2"
+granting_user = f"timbr_granting"
+impersonating_user = f"timbr_impersonating"
 
 def create_users(test_config):
     print("Creating users...")
-    granting_user_stmt = create_granting_user_stmt.format(username=granting_user, password="SecurePassword123", first_name="Granting", last_name="User")
-    impersonating_user_stmt = create_impersonating_user_stmt.format(username=impersonating_user, password="SecurePassword123", first_name="Impersonating", last_name="User")
+    granting_user_stmt = create_granting_user_stmt.format(username=granting_user, password=test_config['timbr_user_password'], first_name="Granting", last_name="User")
+    impersonating_user_stmt = create_impersonating_user_stmt.format(username=impersonating_user, password=test_config['timbr_user_password'], first_name="Impersonating", last_name="User")
 
     run_query(
         url=test_config['url'],
