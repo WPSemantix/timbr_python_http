@@ -45,6 +45,7 @@ This project is a pure python connector to timbr (no dependencies required).
     is_jwt = <True/False>,
     jwt_tenant_id = "<JWT_TENANT_ID>",
     additional_headers = <{ "x-api-impersonate-user": "<user to impersonate>" }>,
+    is_async = <True/False>,
   )
 
   # url                 - Required - String - The IP / Hostname of the Timbr platform.
@@ -56,9 +57,56 @@ This project is a pure python connector to timbr (no dependencies required).
   # verify_ssl          - Optional - Boolean - Verifying the target server's SSL Certificate, use False to disable this process.
   # enable_IPv6         - Optional - Boolean - Change to 'true' if you are using IPv6 connection.
   # is_jwt              - Optional - Boolean - Set to True if you are using JWT token, otherwise set to False.
-  # jwt_tenant_id       - Optional - String - The tenant ID for JWT authentication
+  # jwt_tenant_id       - Optional - String - The tenant ID for JWT authentication.
   # additional_headers  - Optional - Dict - Extra Timbr connection parameters sent with every request (e.g., 'x-api-impersonate-user').
+  # is_async            - Optional - Boolean - Set to True to submit the query asynchronously. Returns the submission response (including response_id) immediately instead of waiting for the result. Use get_async_result() to poll for completion. Default: False.
 ```
+
+## Async query execution
+
+For long-running queries that may time out on a synchronous HTTP connection, use the two-step async flow:
+
+1. **Submit** — call `run_query` with `is_async=True`. It returns immediately with a submission response containing a `response_id`.
+2. **Poll** — call `get_async_result` with the `response_id` to check the status. Repeat until `status` is `'completed'` or `'error'`.
+
+```python
+import time
+import pytimbr_api
+
+URL = "https://mytimbrenv.com:443"
+ONTOLOGY = "my_ontology"
+TOKEN = "tk_mytimbrtoken"
+
+# Step 1: submit the query asynchronously
+submission = pytimbr_api.run_query(
+  url = URL,
+  ontology = ONTOLOGY,
+  token = TOKEN,
+  query = "SELECT * FROM timbr.large_table",
+  is_async = True,
+)
+response_id = submission["response_id"]
+print(f"Query submitted — response_id: {response_id}")
+
+# Step 2: poll until the result is ready
+while True:
+  result = pytimbr_api.get_async_result(
+    url = URL,
+    response_id = response_id,
+    token = TOKEN,
+  )
+  status = result["status"]
+  if status == "completed":
+    print(result["response"])
+    break
+  elif status == "error":
+    raise Exception(f"Query failed: {result.get('error')}")
+  else:
+    print(f"Status: {status} — waiting...")
+    time.sleep(3)
+```
+
+`get_async_result` makes a **single** request each call and returns the raw server response — polling cadence and timeout logic are left to the caller.
 
 ### Using Timbr token
 

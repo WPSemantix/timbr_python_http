@@ -1,1 +1,1 @@
-from .timbr_http_connector import run_query, advancedQueryExecute, simpleQueryExecution, executeQuery
+from .timbr_http_connector import run_query, get_async_result, advancedQueryExecute, simpleQueryExecution, executeQuery

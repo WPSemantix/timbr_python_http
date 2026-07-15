@@ -29,6 +29,19 @@ unique_suffix = str(uuid.uuid4())[:8]
 granting_user = f"timbr_granting"
 impersonating_user = f"timbr_impersonating"
 
+def refresh_permissions(test_config):
+    run_query(
+        url=test_config['url'],
+        ontology=test_config['ontology'],
+        token=test_config['token'],
+        query="refresh permissions",
+        datasource=test_config['datasource'],
+        nested='false',
+        verify_ssl=test_config['verify_ssl'],
+        enable_IPv6=test_config['enableIPv6'],
+    )
+    time.sleep(10) # Make sure the permissions are propagated
+
 def create_users(test_config):
     print("Creating users...")
     granting_user_stmt = create_granting_user_stmt.format(username=granting_user, password=test_config['timbr_user_password'], first_name="Granting", last_name="User")
@@ -44,6 +57,8 @@ def create_users(test_config):
         verify_ssl=test_config['verify_ssl'],
         enable_IPv6=test_config['enableIPv6'],
     )
+    # refresh_permissions(test_config)
+
     run_query(
         url=test_config['url'],
         ontology=test_config['ontology'],
@@ -54,6 +69,7 @@ def create_users(test_config):
         verify_ssl=test_config['verify_ssl'],
         enable_IPv6=test_config['enableIPv6'],
     )
+    # refresh_permissions(test_config)
 
     grant_auth = grant_auth_stmt.format(granting=granting_user, impersonating=impersonating_user)
     run_query(
@@ -66,18 +82,7 @@ def create_users(test_config):
         verify_ssl=test_config['verify_ssl'],
         enable_IPv6=test_config['enableIPv6'],
     )
-
-    # Waiting for user creation to propagate
-    run_query(
-        url=test_config['url'],
-        ontology=test_config['ontology'],
-        token=test_config['token'],
-        query="refresh permissions",
-        datasource=test_config['datasource'],
-        nested='false',
-        verify_ssl=test_config['verify_ssl'],
-        enable_IPv6=test_config['enableIPv6'],
-    )
+    refresh_permissions(test_config)
 
 
 def drop_users(test_config):
@@ -150,7 +155,7 @@ class TestUserImpersonation:
         impersonating_user_token = impersonating_user_token_res[0]['token']
 
         # Act
-        time.sleep(5) # Make sure the permissions are propagated
+        time.sleep(10) # Make sure the permissions are propagated
         res = run_query(
             url=test_config['url'],
             ontology=test_config['ontology'],
