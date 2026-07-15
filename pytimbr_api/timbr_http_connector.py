@@ -9,7 +9,6 @@
 #  ``````````````````````````````````````````````````````````````
 #  Copyright (C) 2018-2024 timbr.ai
 
-import time
 import requests
 
 
@@ -49,32 +48,6 @@ def _build_headers(
     return headers
 
 
-def _poll_async_result(base_url, response_id, headers, verify_ssl, poll_interval, timeout):
-    """Poll for async query result until completed, error, or timeout."""
-    deadline = time.monotonic() + timeout
-    while True:
-        response = requests.get(
-            f'{base_url}timbr/openapi/get-async-results/{response_id}',
-            headers=headers,
-            verify=verify_ssl,
-        )
-        if response.status_code == 404:
-            raise Exception(f'Async result not found (expired or already fetched): {response_id}')
-        try:
-            result = response.json()
-        except Exception as e:
-            raise Exception(f'Could not parse async result response: {e}')
-
-        status = result.get('status')
-        if status == 'completed':
-            return result.get('response')
-        if status == 'error':
-            raise Exception(f'Async query failed: {result.get("error")} ({result.get("error_type", "")})')
-        if time.monotonic() >= deadline:
-            raise TimeoutError(f'Async query did not complete within {timeout}s (response_id={response_id})')
-        time.sleep(poll_interval)
-
-
 def run_query(
     url: str,
     ontology: str,
@@ -88,8 +61,6 @@ def run_query(
     jwt_tenant_id: str = None,
     additional_headers: dict = None,
     is_async: bool = False,
-    poll_interval: float = 2.0,
-    timeout: float = 300.0,
 ):
     datasource_addition = ''
     if datasource:
@@ -114,7 +85,7 @@ def run_query(
     if not is_async:
         return _parse_response(response)
 
-    # Async mode: expect 202, then poll for result
+    # Async mode: expect 202 with response_id, return submission body as-is
     if response.status_code != 202:
         raise Exception(f'Error submitting async query: {response.text}')
     try:
@@ -122,11 +93,56 @@ def run_query(
     except Exception as e:
         raise Exception(f'Could not parse async submission response: {e}')
 
-    response_id = submission.get('response_id')
-    if not response_id:
+    if not submission.get('response_id'):
         raise Exception(f'Server did not return a response_id: {submission}')
 
-    return _poll_async_result(base_url, response_id, headers, verify_ssl, poll_interval, timeout)
+    return submission
+
+
+def get_async_result(
+    url: str,
+    response_id: str,
+    token: str,
+    is_jwt: bool = False,
+    jwt_tenant_id: str = None,
+    verify_ssl: bool = True,
+    additional_headers: dict = None,
+) -> dict:
+    """Fetch the current result of a previously submitted async query.
+
+    Makes a single GET request and returns the raw JSON response from the server.
+    The caller is responsible for checking ``result['status']`` and polling again
+    if it is ``'running'``.
+
+    Returns a dict such as::
+
+        {'status': 'running', 'response_id': '...', 'message': '...'}
+        {'status': 'completed', 'response': [...], 'original_status_code': 200}
+        {'status': 'error', 'error': '...', 'error_type': '...'}
+
+    Raises:
+        Exception: if the server returns 404 (result expired/not found) or a non-200 HTTP status.
+    """
+    base_url = url
+    if not base_url.endswith('/'):
+        base_url = base_url + '/'
+
+    headers = _build_headers(token, is_jwt=is_jwt, jwt_tenant_id=jwt_tenant_id,
+                              additional_headers=additional_headers)
+
+    response = requests.get(
+        f'{base_url}timbr/openapi/get-async-results/{response_id}',
+        headers=headers,
+        verify=verify_ssl,
+    )
+    if response.status_code == 404:
+        raise Exception(f'Async result not found (expired or already fetched): {response_id}')
+    if response.status_code != 200:
+        raise Exception(f'Error fetching async result: {response.text}')
+    try:
+        return response.json()
+    except Exception as e:
+        raise Exception(f'Could not parse async result response: {e}')
 
 
 # Deprecated - Backward compatibility
