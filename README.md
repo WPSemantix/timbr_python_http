@@ -45,6 +45,9 @@ This project is a pure python connector to timbr (no dependencies required).
     is_jwt = <True/False>,
     jwt_tenant_id = "<JWT_TENANT_ID>",
     additional_headers = <{ "x-api-impersonate-user": "<user to impersonate>" }>,
+    is_async = <True/False>,
+    poll_interval = <seconds between polls>,
+    timeout = <max seconds to wait>,
   )
 
   # url                 - Required - String - The IP / Hostname of the Timbr platform.
@@ -56,9 +59,31 @@ This project is a pure python connector to timbr (no dependencies required).
   # verify_ssl          - Optional - Boolean - Verifying the target server's SSL Certificate, use False to disable this process.
   # enable_IPv6         - Optional - Boolean - Change to 'true' if you are using IPv6 connection.
   # is_jwt              - Optional - Boolean - Set to True if you are using JWT token, otherwise set to False.
-  # jwt_tenant_id       - Optional - String - The tenant ID for JWT authentication
+  # jwt_tenant_id       - Optional - String - The tenant ID for JWT authentication.
   # additional_headers  - Optional - Dict - Extra Timbr connection parameters sent with every request (e.g., 'x-api-impersonate-user').
+  # is_async          - Optional - Boolean - Set to True to submit the query asynchronously and poll until complete. Useful for long-running queries that may exceed synchronous HTTP timeouts. Default: False.
+  # poll_interval       - Optional - Float - Seconds to wait between polling attempts when is_async=True. Default: 2.0.
+  # timeout             - Optional - Float - Maximum seconds to wait for an async query to complete. Raises TimeoutError if exceeded. Default: 300.0.
 ```
+
+## Async query execution
+
+For long-running queries that may time out on a synchronous HTTP connection, set `is_async=True`. The function submits the query in the background and polls for the result transparently — the return value is identical to a regular synchronous call.
+
+```python
+  response = pytimbr_api.run_query(
+    url = "https://mytimbrenv.com:443",
+    ontology = "my_ontology",
+    token = "tk_mytimbrtoken",
+    query = "SELECT * FROM timbr.large_table",
+    is_async = True,       # submit in background, poll until done
+    poll_interval = 3.0,     # check every 3 seconds (default: 2.0)
+    timeout = 600.0,         # wait up to 10 minutes (default: 300.0)
+  )
+  print(response)
+```
+
+A `TimeoutError` is raised if the query does not complete within `timeout` seconds. Server-side errors raise a standard `Exception` with details from the server response.
 
 ### Using Timbr token
 

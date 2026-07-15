@@ -87,7 +87,7 @@ def run_query(
     is_jwt: bool = False,
     jwt_tenant_id: str = None,
     additional_headers: dict = None,
-    async_mode: bool = False,
+    is_async: bool = False,
     poll_interval: float = 2.0,
     timeout: float = 300.0,
 ):
@@ -100,7 +100,7 @@ def run_query(
         base_url = base_url + '/'
 
     headers = _build_headers(token, nested, is_jwt, jwt_tenant_id, additional_headers)
-    if async_mode:
+    if is_async:
         headers['x-async'] = 'true'
 
     requests.packages.urllib3.util.connection.HAS_IPV6 = enable_IPv6
@@ -111,7 +111,7 @@ def run_query(
         verify=verify_ssl,
     )
 
-    if not async_mode:
+    if not is_async:
         return _parse_response(response)
 
     # Async mode: expect 202, then poll for result
