@@ -9,6 +9,7 @@
 #  ``````````````````````````````````````````````````````````````
 #  Copyright (C) 2018-2024 timbr.ai
 
+import time
 import requests
 
 
@@ -24,6 +25,56 @@ def _parse_response(response):
     return response_json
 
 
+def _build_headers(
+    token: str,
+    nested: str = 'false',
+    is_jwt: bool = False,
+    jwt_tenant_id: str = None,
+    additional_headers: dict = None,
+) -> dict:
+    headers = {
+        'Content-Type': 'application/text',
+        'nested': nested,
+        'Connection': 'close',
+    }
+    if is_jwt:
+        headers['x-jwt-token'] = token
+        if jwt_tenant_id:
+            headers['x-jwt-tenant-id'] = jwt_tenant_id
+    else:
+        headers['x-api-key'] = token
+    if additional_headers:
+        for key, value in additional_headers.items():
+            headers[key.replace('_', '-')] = value
+    return headers
+
+
+def _poll_async_result(base_url, response_id, headers, verify_ssl, poll_interval, timeout):
+    """Poll for async query result until completed, error, or timeout."""
+    deadline = time.monotonic() + timeout
+    while True:
+        response = requests.get(
+            f'{base_url}timbr/openapi/get-async-results/{response_id}',
+            headers=headers,
+            verify=verify_ssl,
+        )
+        if response.status_code == 404:
+            raise Exception(f'Async result not found (expired or already fetched): {response_id}')
+        try:
+            result = response.json()
+        except Exception as e:
+            raise Exception(f'Could not parse async result response: {e}')
+
+        status = result.get('status')
+        if status == 'completed':
+            return result.get('response')
+        if status == 'error':
+            raise Exception(f'Async query failed: {result.get("error")} ({result.get("error_type", "")})')
+        if time.monotonic() >= deadline:
+            raise TimeoutError(f'Async query did not complete within {timeout}s (response_id={response_id})')
+        time.sleep(poll_interval)
+
+
 def run_query(
     url: str,
     ontology: str,
@@ -36,40 +87,46 @@ def run_query(
     is_jwt: bool = False,
     jwt_tenant_id: str = None,
     additional_headers: dict = None,
+    async_mode: bool = False,
+    poll_interval: float = 2.0,
+    timeout: float = 300.0,
 ):
     datasource_addition = ''
     if datasource:
-      datasource_addition = f'?datasource={datasource}'
-    
+        datasource_addition = f'?datasource={datasource}'
+
     base_url = url
     if not base_url.endswith('/'):
-      base_url = base_url + '/'
-    
-    headers = {
-      'Content-Type': 'application/text',
-      'nested': nested,
-      'Connection': 'close',
-    }
+        base_url = base_url + '/'
 
-    if is_jwt:
-      headers['x-jwt-token'] = token
-      if jwt_tenant_id:
-        headers['x-jwt-tenant-id'] = jwt_tenant_id
-    else:
-      headers['x-api-key'] = token
-
-    if additional_headers:
-       for key, value in additional_headers.items():
-           headers[key.replace('_', '-')] = value
+    headers = _build_headers(token, nested, is_jwt, jwt_tenant_id, additional_headers)
+    if async_mode:
+        headers['x-async'] = 'true'
 
     requests.packages.urllib3.util.connection.HAS_IPV6 = enable_IPv6
     response = requests.post(
-      f'{base_url}timbr/openapi/ontology/{ontology}/query{datasource_addition}',
-      headers = headers,
-      data = query.encode('utf-8') if isinstance(query, str) else query,
-      verify = verify_ssl,
+        f'{base_url}timbr/openapi/ontology/{ontology}/query{datasource_addition}',
+        headers=headers,
+        data=query.encode('utf-8') if isinstance(query, str) else query,
+        verify=verify_ssl,
     )
-    return _parse_response(response)
+
+    if not async_mode:
+        return _parse_response(response)
+
+    # Async mode: expect 202, then poll for result
+    if response.status_code != 202:
+        raise Exception(f'Error submitting async query: {response.text}')
+    try:
+        submission = response.json()
+    except Exception as e:
+        raise Exception(f'Could not parse async submission response: {e}')
+
+    response_id = submission.get('response_id')
+    if not response_id:
+        raise Exception(f'Server did not return a response_id: {submission}')
+
+    return _poll_async_result(base_url, response_id, headers, verify_ssl, poll_interval, timeout)
 
 
 # Deprecated - Backward compatibility
